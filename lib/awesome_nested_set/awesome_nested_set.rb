@@ -565,7 +565,8 @@ module CollectiveIdea #:nodoc:
         # Prunes a branch off of the tree, shifting all of the elements on the right
         # back to the left so the counts still work.
         def destroy_descendants
-          return if right.nil? || left.nil? || skip_before_destroy
+          return if right.nil? || left.nil? || skip_before_destroy ||
+            acts_as_nested_set_options[:dependent] == :soft_destroy
 
           in_tenacious_transaction do
             reload_nested_set
